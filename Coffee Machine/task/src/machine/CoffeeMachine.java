@@ -6,56 +6,68 @@ public class CoffeeMachine {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int machine[] = {400, 540, 120, 9, 550};
+        boolean resume = true;
 
-        etat(machine);
+        while (resume) {
 
-        System.out.println("Write action (buy, fill, take):");
-        String action = getAction(scanner);
 
-        switch (action) {
-            case "buy":
-                System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
-                int drink = getDrink(scanner);
+            System.out.println("Write action (buy, fill, take, remaining, exit):");
+            String action = getAction(scanner);
 
-                switch (drink) {
-                    case 1:
-                        machine = doDrink(machine, 250, 0, 16, 4);
-                        break;
+            switch (action) {
+                case "buy":
+                    System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
+                    String drink = getDrink(scanner);
 
-                    case 2:
-                        machine = doDrink(machine, 350, 75, 20, 7);
-                        break;
+                    switch (drink) {
+                        case "1":
+                            machine = doDrink(machine, 250, 0, 16, 4);
+                            break;
 
-                    case 3:
-                        machine = doDrink(machine, 200, 100, 12, 6);
-                        break;
+                        case "2":
+                            machine = doDrink(machine, 350, 75, 20, 7);
+                            break;
 
-                    default:
-                        System.out.println("Not a drink");
-                }
-                break;
+                        case "3":
+                            machine = doDrink(machine, 200, 100, 12, 6);
+                            break;
 
-            case "fill":
-                System.out.println("Write how many ml of water do you want to add:");
-                int waterF = scanner.nextInt();
-                System.out.println("Write how many ml of milk do you want to add:");
-                int milkF = scanner.nextInt();
-                System.out.println("Write how many grams of coffee beans do you want to add:");
-                int beansF = scanner.nextInt();
-                System.out.println("Write how many disposable cups of coffee do you want to add:");
-                int cupsF = scanner.nextInt();
-                machine = fill(machine, waterF, milkF, beansF, cupsF);
-                break;
+                        case "back":
+                            continue;
 
-            case "take":
-                machine = take(machine);
-                break;
+                        default:
+                            System.out.println("Not a drink");
+                    }
+                    break;
 
-            default:
-                System.out.println("Not a good action");
+                case "fill":
+                    System.out.println("Write how many ml of water do you want to add:");
+                    int waterF = scanner.nextInt();
+                    System.out.println("Write how many ml of milk do you want to add:");
+                    int milkF = scanner.nextInt();
+                    System.out.println("Write how many grams of coffee beans do you want to add:");
+                    int beansF = scanner.nextInt();
+                    System.out.println("Write how many disposable cups of coffee do you want to add:");
+                    int cupsF = scanner.nextInt();
+                    machine = fill(machine, waterF, milkF, beansF, cupsF);
+                    break;
+
+                case "take":
+                    machine = take(machine);
+                    break;
+
+                case "remaining":
+                    etat(machine);
+                    break;
+
+                case "exit":
+                    resume = false;
+                    break;
+
+                default:
+                    System.out.println("Not a good action");
+            }
         }
-
-        etat(machine);
     }
 
     private static void etat (int[] list) {
@@ -68,21 +80,36 @@ public class CoffeeMachine {
     }
 
     private static String getAction(Scanner scanner) {
+
         return scanner.nextLine();
     }
 
-    private static int getDrink(Scanner scanner) {
-        return scanner.nextInt();
+    private static String getDrink(Scanner scanner) {
+
+        return scanner.nextLine();
     }
+
 
     private static int[] doDrink(int[] list, int waterp, int milkp, int beansp, int moneyp) {
         int[] listRes = list;
+        if (waterp > list[0]) {
+            System.out.println("Sorry, not enough water!");
+        } else if (milkp > list[1]) {
+            System.out.println("Sorry, not enough milk!");
+        } else if (beansp > list[2]) {
+            System.out.println("Sorry, not enough coffee beans!");
+        } else if (list[3] < 1) {
+            System.out.println("Sorry, not enough cups!");
+        } else {
+            list[0] -= waterp;
+            list[1] -= milkp;
+            list[2] -= beansp;
+            list[3] -= 1;
+            list[4] += moneyp;
 
-        list[0] -= waterp;
-        list[1] -= milkp;
-        list[2] -= beansp;
-        list[3] -= 1;
-        list[4] += moneyp;
+            System.out.println("I have enough resources, making you a coffee!");
+        }
+
 
         return listRes;
     }
