@@ -1,4 +1,5 @@
 type: code
+custom_name: Does an array contain N?
 files:
 - name: src/Main.java
   visible: true
@@ -9,6 +10,6 @@ files:
         }
     }
   learner_created: false
-feedback_link: https://hyperskill.org/learn/step/2134
+feedback_link: https://hyperskill.org/learn/step/2131
 status: Solved
 record: -1
